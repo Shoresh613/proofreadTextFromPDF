@@ -9,19 +9,19 @@ import openai
 import re
 import textwrap
 
-PDFpath='./PDF/' #Path to the PDF files to process
+PDFpath='./' #Path to the PDF files to process
 openai.api_key = os.getenv("OPENAI_API_KEY")
 max_width = 7777 #To fit nicely within the 2000 token limit of the OpenAI API
 page_name = "Sida" #Translate to what "Page" is called in your language
 
-def process_text(text, max_width):
+def process_text(text:str, max_width:int) -> list[str]:
     # Wrap text into paragraphs of a given width without breaking lines within words
     wrapped_text = textwrap.fill(text, width=max_width)
     # Split wrapped text into chunks of a given size
     chunks = textwrap.wrap(wrapped_text, width=max_width)
     return chunks
 
-def proofread_page(text, page, pages, file):
+def proofread_page(text:str, page:int, pages:int, file:str) -> str:
     #Send to OpenAI for proof reading and return result
     print(f"Page {page+1} of {pages} in {file} being processed by OpenAI")
     response = openai.Completion.create(
@@ -37,7 +37,7 @@ def proofread_page(text, page, pages, file):
         )
     return response.choices[0].text
 
-def clean_up_text(extracted_text):
+def clean_up_text(extracted_text:str) -> str:
     #Clean it up a bit, removing clutter and if some PDF isn't interpreted correctly
     pattern = r"([^a-zA-Z0-9.])(\\1)+" # matches any non letter or digit character except "." that is repeated
     replacement = "" # replaces the match with an empty string
