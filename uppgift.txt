@@ -1,0 +1,10 @@
+Skriv ett program som:
+
+1) Extraherar texten ur alla OCR:ade PDF-filer i en mapp
+2) Rensar texten från skräptecken
+3) Skickar den till OpenAI för korrekturläsning sida för sida
+4) Sparar ner dels originaltexten, dels den korrigerade texten i filer med motsvarande namn i mappen med PDF:er
+5) Under tiden den gör detta, skriver ut på stdout vad den håller på med, så att man ser vad som händer och att något händer.
+
+Syftet är att göra det mer träffsäkert att söka igenom ett stort antal PDF-filer efter önskad text, om den rättat till stavfel
+och kompenserat för vanliga missar vid OCR.
