@@ -23,7 +23,7 @@ def process_text(text:str, max_width:int) -> list[str]:
 
 def proofread_page(text:str, page:int, pages:int, file:str) -> str:
     #Send to OpenAI for proof reading and return result
-    print(f"Page {page+1} of {pages} in {file} being processed by OpenAI")
+    print(f"Page {page} of {pages} in {file} being processed by OpenAI")
     response = openai.Completion.create(
         model="text-davinci-003",
         prompt=("Korrigera stavfel på svenska utan att lägga till någonting varken före eller efter. " 
@@ -50,16 +50,14 @@ for filename in os.listdir(PDFpath):
         # number of pages in pdf file for debug purpose
         pages=len(reader.pages)
 
-        i=0
         corrected_text = ""
         original_text = "" #For comparison and testing purposes
         
         # getting a specific page from the pdf file and extracting text from page, loop through all pages
-        while(i<pages):
-            page = reader.pages[i]
+        for i, page in enumerate(reader.pages, 1):
             extracted_text = page.extract_text()
             if extracted_text is not None:
-                print(f"** Text prior to processing, page {i+1} of {pages} in {filename}: **\n\n{extracted_text}")
+                print(f"** Text prior to processing, page {i} of {pages} in {filename}: **\n\n{extracted_text}")
                 original_text += extracted_text
 
                 #Clean it up a bit
@@ -72,7 +70,7 @@ for filename in os.listdir(PDFpath):
                 for chunk in chunks:
                     corrected_page_text = proofread_page(chunk, i, pages, filename)
                     if (chunk==chunks[0]):
-                        corrected_text += f"- {page_name} {i+1} -\n\n{corrected_page_text}\n\n"
+                        corrected_text += f"- {page_name} {i} -\n\n{corrected_page_text}\n\n"
                     else:
                         corrected_text += f"{corrected_page_text}\n\n"
                 print(f"\n** Corrected text: ** \n\n{corrected_page_text}\n\n")
