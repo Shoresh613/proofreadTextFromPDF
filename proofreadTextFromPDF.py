@@ -14,7 +14,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 max_width = 7777 #To fit nicely within the 2000 token limit of the OpenAI API
 page_name = "Sida" #Translate to what "Page" is called in your language
 
-def process_text(text:str, max_width:int) -> list[str]:
+def chunk_text(text:str, max_width:int) -> list[str]:
     # Wrap text into paragraphs of a given width without breaking lines within words
     wrapped_text = textwrap.fill(text, width=max_width)
     # Split wrapped text into chunks of a given size
@@ -64,7 +64,7 @@ for filename in os.listdir(PDFpath):
                 extracted_text = clean_up_text(extracted_text)
 
                 #Split the text in chunks of 7777 characters, roughly 2000 tokens, which is the OpenAI API limit              
-                chunks = process_text(extracted_text, max_width)
+                chunks = chunk_text(extracted_text, max_width)
                 
                 #Process the chunks one by one
                 for chunk in chunks:
@@ -74,7 +74,6 @@ for filename in os.listdir(PDFpath):
                     else:
                         corrected_text += f"{corrected_page_text}\n\n"
                 print(f"\n** Corrected text: ** \n\n{corrected_page_text}\n\n")
-            i+=1
       
         with open(PDFpath+filename+'_original.txt', 'w', encoding="utf-8") as f:            
             f.write(original_text)
