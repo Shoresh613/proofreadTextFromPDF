@@ -68,11 +68,12 @@ for filename in os.listdir(PDFpath):
                 
                 #Process the chunks one by one
                 for chunk in chunks:
+               	    page_name_written=0
                     corrected_page_text = proofread_page(chunk, i, pages, filename)
-                    if (chunk==chunks[0]):
-                        corrected_text += f"- {page_name} {i} -\n\n{corrected_page_text}\n\n"
-                    else:
-                        corrected_text += f"{corrected_page_text}\n\n"
+                    if (chunk==chunks[0] and page_name_written==0):
+                        corrected_text += f"- {page_name} {i} -\n\n"
+                        page_name_written=1
+                    corrected_text += f"{corrected_page_text}\n\n"
                 print(f"\n** Corrected text: ** \n\n{corrected_page_text}\n\n")
       
         with open(PDFpath+filename+'_original.txt', 'w', encoding="utf-8") as f:            
