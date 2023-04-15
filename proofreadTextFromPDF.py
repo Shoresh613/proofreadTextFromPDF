@@ -9,10 +9,12 @@ import openai
 import re
 import textwrap
 
-PDFpath='./' #Path to the PDF files to process
+PDFpath='./PDF/' #Path to the PDF files to process
 openai.api_key = os.getenv("OPENAI_API_KEY")
 max_width = 7777 #To fit nicely within the 2000 token limit of the OpenAI API
 page_name = "Sida" #Translate to what "Page" is called in your language
+total_pages=0
+total_files=0
 
 def chunk_text(text:str, max_width:int) -> list[str]:
     # Wrap text into paragraphs of a given width without breaking lines within words
@@ -45,6 +47,7 @@ def clean_up_text(extracted_text:str) -> str:
 
 for filename in os.listdir(PDFpath):
     if filename.endswith('.pdf'):
+        total_files += 1
         extracted_text =""
         reader = PdfReader(PDFpath+filename)
         # number of pages in pdf file for debug purpose
@@ -56,6 +59,7 @@ for filename in os.listdir(PDFpath):
         # getting a specific page from the pdf file and extracting text from page, loop through all pages
         for i, page in enumerate(reader.pages, 1):
             extracted_text = page.extract_text()
+            total_pages+=1
             if extracted_text is not None:
                 print(f"** Text prior to processing, page {i} of {pages} in {filename}: **\n\n{extracted_text}")
                 original_text += extracted_text
@@ -82,4 +86,7 @@ for filename in os.listdir(PDFpath):
         with open(PDFpath+filename+'_corrected.txt', 'w', encoding="utf-8") as f:            
             f.write(corrected_text)
 
-        print("Done!")
+if total_files > 0:
+    print(f"Finished processing {total_pages} pages in {total_files} files!")
+else:
+    print("No PDF files in specified directory.")

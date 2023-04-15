@@ -11,7 +11,8 @@ Put all PDF files in a folder named PDF, or specify the path in the variable PDF
 The temperature is set to 0.1, as that is what is used in the OpenAI example for correcting grammar.
 
 You need an OpenAI API key environment variable. Remember OpenAI charges for the processing.
-The cost can be reduced by an order of magnitude by instead using the gpt-3.5-turbo model
-and adapting the code accordingly.
+The cost can be reduced by orders of magnitude by instead using the gpt-3.5-turbo model
+and adapting the code accordingly. The cost would then go down to $0.002 / 1K tokens
+instead of 	$0.12 / 1K tokens.
 
 Unfortunately the results are dissappointing using the best text completion model (text-davinci-003).
