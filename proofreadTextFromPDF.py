@@ -11,9 +11,7 @@ import textwrap
 
 PDFpath='./PDF/' #Path to the PDF files to process
 openai.api_key = os.getenv("OPENAI_API_KEY")
-if openai.api_key == None:
-    print("You need to set the 'OPENAI_API_KEY' environment variable")
-    exit
+
 max_width = 7777 #To fit nicely within the 2000 token limit of the OpenAI API
 page_name = "Sida" #Translate to what "Page" is called in your language
 total_pages=0
@@ -48,6 +46,9 @@ def clean_up_text(extracted_text:str) -> str:
     replacement = "" # replaces the match with an empty string
     return re.sub (pattern, replacement, extracted_text) # performs the substitution
 
+if openai.api_key == None:
+    print("You need to set the 'OPENAI_API_KEY' environment variable")
+    exit
 for filename in os.listdir(PDFpath):
     if filename.endswith('.pdf'):
         total_files += 1
