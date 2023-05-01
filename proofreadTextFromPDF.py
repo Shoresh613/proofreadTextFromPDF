@@ -1,3 +1,4 @@
+
 # Corrects text extracted from PDF files in Swedish. The PDF is typically an OCR of scanned paper.
 # Put all PDF files in a folder named PDF.
 # You need an OpenAI API key environment variable. Remember OpenAI charges for the processing.
@@ -106,7 +107,7 @@ for filename in os.listdir(PDFpath):
                 
                 #Process the chunks one by one
                 for chunk in chunks:
-               	    page_name_written=0
+                    page_name_written=0
                     corrected_page_text = proofread_page(chunk, i, pages, filename)
                     if (chunk==chunks[0] and page_name_written==0):
                         corrected_text += f"- {page_name} {i} -\n\n"
