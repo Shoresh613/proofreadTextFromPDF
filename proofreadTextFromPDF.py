@@ -22,14 +22,34 @@ total_pages=0
 total_files=0
 
 def chunk_text(text:str, max_width:int) -> list[str]:
-    # Wrap text into paragraphs of a given width without breaking lines within words
+    """
+    Wrap text into paragraphs of a given width without breaking lines within words.
+    
+    Args:
+        text (str): The text to be wrapped.
+        max_width (int): The maximum width of each line.
+        
+    Returns:
+        list[str]: A list of strings where each string is a paragraph.
+    """
     wrapped_text = textwrap.fill(text, width=max_width)
     # Split wrapped text into chunks of a given size
     chunks = textwrap.wrap(wrapped_text, width=max_width)
     return chunks
 
 def proofread_page(text:str, page:int, pages:int, file:str) -> str:
-    #Send to OpenAI for proof reading and return result
+    """
+    Send text to OpenAI for proofreading and return result.
+    
+    Args:
+        text (str): The text to be proofread.
+        page (int): The current page number.
+        pages (int): The total number of pages.
+        file (str): The name of the file being processed.
+        
+    Returns:
+        str: The proofread text.
+    """
     print(f"Page {page} of {pages} in {file} being processed by OpenAI")
     response = openai.Completion.create(
         model="text-davinci-003",
@@ -45,6 +65,15 @@ def proofread_page(text:str, page:int, pages:int, file:str) -> str:
     return response.choices[0].text
 
 def clean_up_text(extracted_text:str) -> str:
+    """
+    Clean up text by removing clutter and if some PDF isn't interpreted correctly.
+    
+    Args:
+        extracted_text (str): The text to be cleaned up.
+        
+    Returns:
+        str: The cleaned up text.
+    """
     #Clean it up a bit, removing clutter and if some PDF isn't interpreted correctly
     pattern = r"([^a-zA-Z0-9.])(\\1)+" # matches any non letter or digit character except "." that is repeated
     replacement = "" # replaces the match with an empty string
